@@ -10,7 +10,6 @@ def decipher(key: str, ectext: str) -> str:
                 matrix[i - 5 if i - 5 >= 0 else 20 + icol]
                 + matrix[j - 5 if j - 5 >= 0 else 20 + jcol]
             )
-
         elif i // 5 == j // 5:
             etext += (
                 matrix[i - 1 if (i - 1) // 5 == irow else irow * 5 + 4]

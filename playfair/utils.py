@@ -5,7 +5,7 @@ from typing import Iterator, Tuple
 # curate a string based in requirements of playfar cipher
 def curate(item: str) -> str:
     item = item.upper()
-    item = item.replace(" ", '')
+    item = item.replace(" ", "")
     item = item.replace("Ñ", "")
     item = item.replace("J", "I")
     for i in range(0, len(item) - 1, 2):
