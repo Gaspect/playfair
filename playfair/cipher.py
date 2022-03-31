@@ -1,27 +1,20 @@
-from .utils import curate, fix_index, keyless_matrix
+from .utils import common
 
 
 # cipher using playfair
 def cipher(key: str, ptext: str) -> str:
-    ctext = curate(ptext)
-    matrix = keyless_matrix(key)
+    matrix, indexes = common(key, ptext)
     etext = ""
-    for ci in range(0, len(ctext) - 1, 2):
-        i = matrix.index(ctext[ci])
-        j = matrix.index(ctext[ci + 1])
-        irow = i // 5
-        icol = i % 5
-        jrow = j // 5
-        jcol = j % 5
+    for i, irow, icol, j, jrow, jcol in indexes:
         if abs(j - i) % 5 == 0:
-            etext += (
-                matrix[fix_index(i + 5, icol + 20, lambda r: icol)]
-                + matrix[fix_index(j + 5, jcol + 20, lambda r: jcol)]
+            etext+=(
+                matrix[i + 5 if i + 5 <= icol + 20 else icol]
+                + matrix[j + 5  if j + 5 <= jcol +20 else jcol]
             )
         elif i // 5 == j // 5:
             etext += (
-                matrix[fix_index(i + 1, irow * 5 + 4, lambda r: irow * 5)]
-                + matrix[fix_index(j + 1, irow * 5 + 4, lambda r: jrow * 5)]
+                matrix[i+1 if i+1 <= irow*5+4 else irow*5]
+                + matrix[j+1 if j+1 <= jrow*5+4 else jrow*5]
             )
         else:
             cipheri = jcol + irow * 5

@@ -10,6 +10,7 @@ class Example:
     plain_text: str
     curated_plain_text: str
     encrypted_text: str
+    decrypted_text: str
 
 
 @pytest.fixture
@@ -22,9 +23,9 @@ def examples() -> list[Example]:
             plain_text="Puesta",
             curated_plain_text="PUESTA",
             encrypted_text="QPLXQI",
+            decrypted_text= "PUESTA"
         )
     ]
-
 
 def test_curation(examples: list[Example]):
     from playfair.utils import curate
@@ -40,16 +41,6 @@ def test_general_keyless_matrix_generation(examples: list[Example]):
     for example in examples:
         assert keyless_matrix(example.key) == example.keyless_matrix
 
-
-def test_fix_index():
-    from playfair.utils import fix_index
-
-    assert fix_index(0, 25) == 0 # extreme case
-    assert fix_index(25, 25) == 25 # extreme case
-    assert fix_index(26, 25) == 1 # usual case
-    assert fix_index(29, 25, lambda r: r + 1) == 5 # twitch case
-
-
 def test_cipher_process(examples: list[Example]):
     from playfair.cipher import cipher
 
@@ -61,4 +52,4 @@ def test_decipher_process(examples: list[Example]):
     from playfair.decipher import decipher
 
     for example in examples:
-        assert decipher(example.key, example.encrypted_text) == example.plain_text
+        assert decipher(example.key, example.encrypted_text) == example.decrypted_text

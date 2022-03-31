@@ -1,5 +1,5 @@
 # curate a string based on  the playfair cipher
-from typing import Callable, Optional, Pro
+from typing import Iterator, Tuple
 
 # curate a string based in requirements of playfar cipher
 def curate(item: str) -> str:
@@ -22,12 +22,18 @@ def keyless_matrix(key: str) -> str:
             matrix += ch
     return matrix
 
-
-# fix a index based on the max
-def fix_index(
-    index: int, max: int, rest_handler: Optional[Callable[[int], int]] = None
-) -> int:
-    if index > max:
-        value = index % max
-        return rest_handler(value) if rest_handler else value
-    return index
+def common(key:str, text:str) -> Tuple[str, Iterator[Tuple[int, int, int, int, int, int]]]:
+    ctext = curate(text)
+    matrix = keyless_matrix(key)
+    
+    def iterator() -> Iterator[Tuple[int, int, int, int, int, int]]:
+        for ci in range(0, len(ctext) - 1, 2):
+            i = matrix.index(ctext[ci])
+            j = matrix.index(ctext[ci + 1])
+            irow = i // 5
+            icol = i % 5
+            jrow = j // 5
+            jcol = j % 5
+            yield i, irow, icol, j, jrow, jcol
+    
+    return matrix, iterator()
