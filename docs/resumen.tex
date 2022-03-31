@@ -1,12 +1,60 @@
 \documentclass{article}
 
+
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[spanish,es-ucroman]{babel}
+\usepackage[linktocpage,breaklinks,colorlinks,%
+linkcolor=black,anchorcolor=black,citecolor=black,%
+filecolor=black,menucolor=black,runcolor=black,%
+urlcolor=black]{hyperref}
+\usepackage{bookmark}
 
 \title{Algoritmo de Playfair}
 \author{Alejandro Valoy Gorrín, Jesús Enrique Fuentes González}
+
 \begin{document}
     \maketitle
-    % TODO: Article
+    El cifrado de Playfair fue el primer sistema de cifrado en encriptar
+    pares de letras. Wheatstone inventó el cifrado para encriptar mensajes
+    enviados por telegrama, pero lleva el nombre de su amigo lord Playfair,
+    quien lo promovió para uso militar. 
+
+    \section{Proceso de cifrado}
+    \subsection{Creación de matriz de cifrado}
+    Dada una llave \textit{k} a esta se le aplican las siguientes transformaciones
+    \begin{enumerate}
+        \item Convertir las letras de \textit{k} en mayúscula
+        \item Eliminar los espacios en \textit{k}
+        \item Eliminar las Ñ  en \textit{k}
+        \item Reemplazar las J por I en \textit{k}
+        \item Rellenar \textit{k} con el resto de letras del alfabeto(la longitud del alfabeto es de 25 para el playfair clásico) que no se repitan en \textit{k}.
+        \item Convertir \textit{k} rellenada en una matriz \textit{m} de 5x5 donde 5 letras consecutivas representan una fila de la matriz \textit{m}. 
+    \end{enumerate}
+    \subsection{Cifrar texto}
+    Dado un texto \textit{t} y una matriz de cifrado \textit{m}.
+    \begin{enumerate}
+        \item Convertir las letras de  \textit{t} en mayúsculas.
+        \item Eliminar los espacios en \textit{t}.
+        \item Eliminar las Ñ en \textit{t}.
+        \item Reemplazar las J por I en \textit{t}.
+        \item Adicionar la letra X a \textit{t} si la longitud de \textit{t} es impar.
+        \item Dividir a \textit{t} en pares de caracteres consecutivos en \textit{m1} y  \textit{m2}.
+        \item Por cada par de caracteres \textit{m1} y \textit{m2} hacer:
+            \begin{enumerate}
+                \item Si \textit{m1} y \textit{m2} se encuentran en la misma fila, escoger \textit{c1} y \textit{c2} situados a su derecha (circularmente).
+                \item Si \textit{m1} y \textit{m2} se encuentran en la misma columna, escoger \textit{c1} y \textit{c2} situados debajo (circularmente).
+                \item Si \textit{m1} y \textit{m2} se encuentran en distintas filas y columnas, escoger \textit{c1} y \textit{c2} situados en la diagonal opuesta (siempre de derecha a izquierda).
+            \end{enumerate}
+    \end{enumerate}
+    \section{Debilidades criptográficas}
+    \begin{enumerate}
+        \item Imposibilidad de que una letra sea codificada como ella misma
+        \item Se trata de una sustitución simple aplicada a los pares de letras en la que existe una correspondencia unívoca entre cada par de letras y su cifra.
+        \item Cada letra puede sustituirse, exclusivamente, por las que comparten con ella línea o columna en el cuadro, lo que no hace más que ocho en total y puede revelar la estructura del cuadro.
+        \item Dos pares de letras que sean invertidos darán lugar a dos nuevos pares de letras también invertidos
+    \end{enumerate}
+
+
+    Nota: El código asociado al algoritmo puede encontrarse \href{aquí}{https://github.com/Gaspect/playfair}. 
 \end{document}
